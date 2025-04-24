@@ -3,19 +3,21 @@ pipeline {
 
     stages {
         stage('Build') {
-            steps {
-                script {
-                    docker.image('node:18-alpine').inside {
-                        sh '''
-                            ls -la
-                            node --version
-                            npm -v
-                            npm ci
-                            npm run build
-                            ls -la
-                        '''
-                    }
+            agent {
+                docker {
+                    image 'node:18-alpine'
+                    resueNode true
                 }
+            }
+            steps {
+                sh '''
+                    ls -la
+                    node --version
+                    npm -v
+                    npm ci
+                    npm run build
+                    ls -la
+                '''
             }
         }
     }
